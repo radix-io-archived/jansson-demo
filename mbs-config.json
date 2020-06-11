@@ -23,7 +23,6 @@
 		},
 		"credential" : 1234
 	},
-	
 	"services" : {
 		"bake" : {
 			"library" : "libbake-server.so",
@@ -31,7 +30,7 @@
 		}
 	},
 	"providers" : [
-		{ 
+		{
 			"service" : "bake",
 		  	"provider-id" : 42,
 			"constraints" : { "ssg-ranks" : [0,1,2,3] },
