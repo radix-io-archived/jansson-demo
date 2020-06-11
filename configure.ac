@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.63])
 AC_INIT([margo], [0.6], [],[],[]) 
-# AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIR([m4])
 LT_INIT
 
 AC_CANONICAL_TARGET
