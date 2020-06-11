@@ -1,0 +1,42 @@
+{
+	"argobots" : {
+		"xstreams" : 16,
+		"pools" : [
+			{ "name" : "mypoolA",
+			  "xstreams" : [ 0,1,2,3,4 ]
+		    },
+			{ "name" : "mypoolB",
+			  "xstreams" : [ 0,4,5,7 ]
+		    }
+		]
+	},
+	"mercury" : {
+		"protocol" : "ofi+tcp",
+		"progress-pool" : "mypoolA",
+		"handlers-pool" : "mypoolB"
+	},
+	"ssg" : {
+		"swim" : {
+			"period-length-ms" : 1000,
+			"suspected-timeout-periods" : 3,
+			"subgroup-member-count" : 1
+		},
+		"credential" : 1234
+	},
+	
+	"services" : {
+		"bake" : {
+			"library" : "libbake-server.so",
+			"constraints" : { "ssg-ranks" : "all" }
+		}
+	},
+	"providers" : [
+		{ 
+			"service" : "bake",
+		  	"provider-id" : 42,
+			"constraints" : { "ssg-ranks" : [0,1,2,3] },
+			"pool" : "mypoolB",
+			"config" : {}
+	   	}
+	]
+}
