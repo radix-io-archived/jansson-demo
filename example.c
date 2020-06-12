@@ -186,7 +186,7 @@ int main(int argc, char *argv[]) {
     }
 
     /* parse text into JSON structure */
-    json_t *root = json_load_file(argv[1], 0, &err);
+    json_t *root = json_load_file(argv[1], JSON_REJECT_DUPLICATES, &err);
 
     if (root) {
         /* print and release the JSON structure */
