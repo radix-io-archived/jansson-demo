@@ -1,4 +1,8 @@
 /*
+ * Taken from simple_parser.c example in jansson repository.  Modified to
+ * show parsing, finding a configuration value, modifying it, and writing it
+ * back out, using MBS json as an example.
+ *
  * Simple example of parsing and printing JSON using jansson.
  *
  * SYNOPSIS:
