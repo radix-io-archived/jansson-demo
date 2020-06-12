@@ -178,22 +178,20 @@ char *read_line(char *line, int max_chars) {
 
 int main(int argc, char *argv[]) {
     char line[MAX_CHARS];
+    json_error_t err;
 
-    if (argc != 1) {
-        fprintf(stderr, "Usage: %s\n", argv[0]);
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <json_file>\n", argv[0]);
         exit(-1);
     }
 
-    while (read_line(line, MAX_CHARS) != (char *)NULL) {
+    /* parse text into JSON structure */
+    json_t *root = json_load_file(argv[1], 0, &err);
 
-        /* parse text into JSON structure */
-        json_t *root = load_json(line);
-
-        if (root) {
-            /* print and release the JSON structure */
-            print_json(root);
-            json_decref(root);
-        }
+    if (root) {
+        /* print and release the JSON structure */
+        print_json(root);
+        json_decref(root);
     }
 
     return 0;
