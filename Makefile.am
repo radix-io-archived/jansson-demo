@@ -38,4 +38,4 @@ pkgconfigdir =
 pkgconfig_DATA =
 
 
-noinst_PROGRAMS += simple_parse
+noinst_PROGRAMS += example
