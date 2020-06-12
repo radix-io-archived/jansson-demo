@@ -181,7 +181,10 @@ int main(int argc, char *argv[]) {
     char line[MAX_CHARS];
     json_error_t err;
     const char *key;
+    const char *hg_key;
     json_t *value;
+    json_t *hg_value;
+    int found = 0;
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <json_file>\n", argv[0]);
@@ -205,7 +208,16 @@ int main(int argc, char *argv[]) {
     printf("=========================\n");
     json_object_foreach(root, key, value) {
         if(strcmp(key, "mercury") == 0)
-            printf("Found top-level Mercury object.\n");
+        {
+            json_object_foreach(value, hg_key, hg_value)
+            {
+                if(strcmp(hg_key, "protocol") == 0)
+                {
+                    found = 1;
+                    printf("found ROOT/mercury/protocol key.\n");
+                }
+            }
+        }
     }
 
     /* release the json structure */
