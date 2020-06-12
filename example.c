@@ -25,6 +25,7 @@
 #include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* forward refs */
 void print_json(json_t *root);
@@ -179,6 +180,8 @@ char *read_line(char *line, int max_chars) {
 int main(int argc, char *argv[]) {
     char line[MAX_CHARS];
     json_error_t err;
+    const char *key;
+    json_t *value;
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <json_file>\n", argv[0]);
@@ -187,12 +190,26 @@ int main(int argc, char *argv[]) {
 
     /* parse text into JSON structure */
     json_t *root = json_load_file(argv[1], JSON_REJECT_DUPLICATES, &err);
-
-    if (root) {
-        /* print and release the JSON structure */
-        print_json(root);
-        json_decref(root);
+    if(!root)
+    {
+        fprintf(stderr, "Error loading file\n");
+        exit(-1);
     }
+
+    /* print */
+    printf("DUMPING JSON CONTENTS:\n");
+    printf("======================\n");
+    print_json(root);
+
+    printf("FINDING MERCURY PROTOCOL:\n");
+    printf("=========================\n");
+    json_object_foreach(root, key, value) {
+        if(strcmp(key, "mercury") == 0)
+            printf("Found top-level Mercury object.\n");
+    }
+
+    /* release the json structure */
+    json_decref(root);
 
     return 0;
 }
