@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 /* forward refs */
 void print_json(json_t *root);
@@ -185,6 +186,8 @@ int main(int argc, char *argv[]) {
     json_t *value;
     json_t *hg_value;
     int found = 0;
+    char output_template[256];
+    int fd;
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <json_file>\n", argv[0]);
@@ -204,7 +207,7 @@ int main(int argc, char *argv[]) {
     printf("======================\n");
     print_json(root);
 
-    printf("FINDING MERCURY PROTOCOL:\n");
+    printf("MANIPULATING FIELDS:\n");
     printf("=========================\n");
     json_object_foreach(root, key, value) {
         if(strcmp(key, "mercury") == 0)
@@ -214,11 +217,24 @@ int main(int argc, char *argv[]) {
                 if(strcmp(hg_key, "protocol") == 0)
                 {
                     found = 1;
-                    printf("found ROOT/mercury/protocol key.\n");
+                    printf("found ROOT/mercury/protocol set to \"%s\".\n",
+                        json_string_value(hg_value));
+                    printf("changing ROOT/mercury/protocol to \"verbs\".\n");
+                    json_object_set(value, "protocol", json_string("verbs"));
                 }
             }
         }
     }
+    if(!found) fprintf(stderr, "WARNING: could not find protocol.\n");
+
+    printf("ENCODING:\n");
+    printf("=========================\n");
+
+    sprintf(output_template, "/tmp/json.XXXXXX");
+    fd = mkstemp(output_template);
+    close(fd);
+    json_dump_file(root, output_template, JSON_INDENT(4));
+    printf("wrote modified json to %s\n", output_template);
 
     /* release the json structure */
     json_decref(root);
