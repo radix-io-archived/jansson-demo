@@ -14,3 +14,6 @@ cd build
 make
 ./example ../mbs-config.json
 ```
+
+If you want a baloney sandwich, please state your preferences in the json
+(level of frying, type of bread, volume of mayo).
